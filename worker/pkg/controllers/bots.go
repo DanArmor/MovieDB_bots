@@ -15,9 +15,13 @@ import (
 
 func (self *Service) GetHealth(context *gin.Context) {
 	requestUrl := strings.TrimSpace(self.Config.ServerURL + "/public/health")
-	_, err := http.Get(requestUrl)
+	answ, err := http.Get(requestUrl)
 	if err != nil {
 		context.JSON(http.StatusOK, gin.H{"status": "Error", "desc" : "Server is not responding: " + err.Error()})
+		return
+	}
+	if answ.StatusCode != 200{
+		context.JSON(http.StatusOK, gin.H{"status": "Error", "desc" : "Server is not responding. Code: " + fmt.Sprint(answ.StatusCode) })
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"status": "OK", "desc" : "Up and running!"})
