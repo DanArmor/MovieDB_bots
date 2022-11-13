@@ -17,19 +17,22 @@ func main() {
 	}
 
 	config.AdminPass = utils.HashPassword(config.AdminPass)
+	config.ServerURL = "https://" + config.Domain
 	
 	service := controllers.Service{
-		AdminPass: config.AdminPass,
-		Domain: config.Domain,
-		BaseUrl: "https://" + config.Domain + config.ServerPort,
+		Config: config,
 	}
 
 	router := gin.Default()
 
-	admin := router.Group("/admin")
-	admin.Use(service.ValidateAdmin)
+	bots := router.Group("/bots")
+	bots.Use(service.ValidateAdmin)
+	bots.GET("/health", service.GetHealth)
+	bots.GET("/healthSQL", service.GetHealthSQL)
+	bots.GET("/run_server", service.RunServer)
+	bots.GET("/stop_server", service.StopServer)
+	bots.GET("/run_backup", service.RunBackup)
+	bots.Static("/backups", "backups")
 
-	admin.GET("/health", service.GetHealth)
-
-	router.RunTLS(config.Port, config.CertPath, config.KeyPath)
+	router.RunTLS("127.0.0.1" + config.Port, config.CertPath, config.KeyPath)
 }

@@ -1,14 +1,7 @@
 package controllers
 
-import "gorm.io/gorm"
+import "github.com/DanArmor/MovieDB_bots/pkg/config"
 
 type Service struct {
-	AdminPass string
-	Domain    string
-	BaseUrl   string
-	DB        *gorm.DB
-}
-
-func (self *Service) ConnectDB() {
-	return
+	Config    config.Config
 }

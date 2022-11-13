@@ -8,8 +8,12 @@ type Config struct {
 	AdminPass  string `mapstructure:"ADMIN_PASS"`
 	CertPath   string `mapstructure:"CERT_PATH"`
 	KeyPath    string `mapstructure:"KEY_PATH"`
-	Domain     string `mapstructure:"DOMAIN"`
 	ServerPort string `mapstructure:"SERVER_PORT"`
+	PathServer string `mapstructure:"PATH_SERVER"`
+	ServerURL  string
+	SqlUser    string `mapstructure:"SQL_USER"`
+	SqlPass    string `mapstructure:"SQL_PASS"`
+	Domain     string `mapstructure:"DOMAIN"`
 }
 
 func LoadConfig() (c Config, err error) {

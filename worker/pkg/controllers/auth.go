@@ -14,7 +14,7 @@ func (self *Service) ValidateAdmin(context *gin.Context) {
 		return
 	}
 
-	if utils.CheckPasswordHash(pass, self.AdminPass) == false {
+	if utils.CheckPasswordHash(pass, self.Config.AdminPass) == false {
 		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Wrong admin password!"})
 		return
 	}
