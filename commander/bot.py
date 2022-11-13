@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 BaseURL = None
 Admins = []
 Headers = {}
+DestMode = None
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -64,6 +65,8 @@ async def runBackup(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f.write(r.content)
             with open("backups/" + fileName, "rb") as f:
                 await context.bot.send_document(chat_id=update.effective_chat.id, document=f, read_timeout=50)
+                if(DestMode != "Remote"):
+                    os.remove("backups/" + fileName)
             return
         mes = f"Status: {status}.\nDesc: {desc}"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=mes)
@@ -83,6 +86,7 @@ if __name__ == '__main__':
     BaseURL = data["ServerURL"]
     Admins = data["Admins"]
     Headers["pass"] = data["pass"]
+    DestMode = data["Mode"]
     application = ApplicationBuilder().token(data["token"]).build()
     
     application.add_handler(CommandHandler('health', generateHandler("/bots/health", "Ошибка подключения к серверу MovieDB.")))
