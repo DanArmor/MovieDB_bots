@@ -127,6 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-envs/
-backups/
+envs/*
+backups/*
 log.txt
