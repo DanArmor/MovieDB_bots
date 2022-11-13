@@ -66,7 +66,7 @@ async def runBackup(update: Update, context: ContextTypes.DEFAULT_TYPE):
             with open("backups/" + fileName, "rb") as f:
                 await context.bot.send_document(chat_id=update.effective_chat.id, document=f, read_timeout=50)
                 if(DestMode != "Remote"):
-                    os.remove("backups/" + fileName)
+                    os.remove(os.path.join("backups", fileName))
             return
         mes = f"Status: {status}.\nDesc: {desc}"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=mes)
